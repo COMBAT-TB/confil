@@ -1,0 +1,10 @@
+categories:
+  - Metagenomics
+description: Contamination Filter (confil).
+homepage_url: https://github.com/COMBAT-TB/confil
+long_description: |
+  confil parses a kraken2 report and determines contamination based on a specified cutoff.
+name: confil
+owner: sanbi-uwc
+remote_repository_url: https://github.com/COMBAT-TB/confil
+type: unrestricted
