@@ -20,5 +20,4 @@ def cli_runner():
 
 def test_runner(cli_runner):
     result = cli_runner.invoke(confil, ["--paired", FILE_1, FILE_2])
-    # We have a contaminated test file!
-    assert result.exit_code == 1
+    assert result.exit_code == 0
