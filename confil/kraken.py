@@ -29,16 +29,15 @@ def run_kraken(db, threads, cutoff, paired, seqfiles):
     if paired:
         cmd += "--paired --classified-out {}_cseqs#.fq ".format(seq_name)
     cmd += "{seqfiles}".format(seqfiles=' '.join(seqfiles))
-    click.secho("Executing kraken2: \n{}".format(
+    click.secho("Executing kraken2: \n{}\n".format(
         split(cmd)), fg='bright_yellow')
 
     # TODO: remove
-    test_file = os.path.join(
-        OUT_DIR, "test/test_data/test_file.report")
+    test_file = "https://raw.githubusercontent.com/COMBAT-TB/confil/master/test/test_data/test_file.report"
     out_file = os.path.join(OUT_DIR, "{}.report".format(seq_name))
-    mock_cmd = 'cp {}  {}'.format(test_file, out_file)
+    mock_cmd = 'wget {} -O {}'.format(test_file, out_file)
     cmd = mock_cmd
-    click.secho("\n{}".format(split(cmd)), fg='red')
+    click.secho("Executing mock_cmd: \n{}\n".format(split(cmd)), fg='red')
 
     p = Popen(split(cmd), stdout=PIPE, stderr=PIPE, close_fds=True)
     while True:
@@ -50,7 +49,7 @@ def run_kraken(db, threads, cutoff, paired, seqfiles):
     returncode = p.poll()
     if returncode != 0:
         error = p.stderr.readline()
-        raise OSError("Kraken2 launch error:\n{}".format(error))
+        raise OSError("Kraken2 launch error:\n{}\n".format(error))
     # parse kraken report
     report_file = os.path.join(OUT_DIR, "{}.report".format(seq_name))
     parse_report(report_file=report_file, cutoff=cutoff)

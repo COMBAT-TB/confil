@@ -1,0 +1,49 @@
+<tool id="confil" name="Contamination Filter (confil)" version="0.1.0">
+    <requirements>
+        <requirement type="package" version="7.0">click</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        confil --threads $threads --paired --cutoff $cutoff "$input1" "$input2"
+    ]]></command>
+    <inputs>
+        <param type="data" name="input1" format="fastq" />
+        <param type="data" name="input2" format="fastq" />
+        <param name="cutoff" type="integer" label="Cutoff percentage" 
+               value="50" min="50" max="99" />
+        <param name="threads" type="integer" label="Number of threads" 
+               value="1" min="1" max="4" />
+    </inputs>
+    <outputs>
+        <data name="output1" format="tabular" from_work_dir="seq.report" />
+    </outputs>
+    <tests>
+        <test>
+            <param name="input1" value="seq_1.fastq"/>
+            <param name="input2" value="seq_2.fastq"/>
+            <output name="output1" file="seq.report"/>
+        </test>
+    </tests>
+    <help><![CDATA[
+        Usage: confil [OPTIONS] SEQFILES...
+
+Options:
+  --db PATH          Name for Kraken 2 DB  [default:
+                     /tools/databases/kraken2/04092018/standard/; required]
+  --threads INTEGER  Number of threads  [default: 1]
+  --cutoff INTEGER   Percentage of fragments covered  [default: 90]
+  --paired           The filenames provided have paired-end reads
+  --help             Show this message and exit.
+
+    ]]></help>
+    <citations>
+        <citation type="bibtex">
+@misc{githubconfil,
+  author = {SANBI-SA},
+  year = {2019},
+  title = {confil},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  url = {https://github.com/COMBAT-TB/confil},
+}</citation>
+    </citations>
+</tool>

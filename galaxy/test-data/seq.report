@@ -1,0 +1,16 @@
+ 28.34	1198200	1198200	U	0	unclassified
+ 71.66	3030398	1705	R	1	root
+ 71.59	3027326	90	R1	131567	  cellular organisms
+ 71.33	3016097	5832	D	2	    Bacteria
+ 56.09	2371684	139	D1	1783272	      Terrabacteria group
+ 55.96	2366280	32	P	201174	        Actinobacteria
+ 55.96	2366229	970	C	1760	          Actinobacteria
+ 55.90	2363912	491	O	85007	            Corynebacteriales
+ 55.88	2363031	1244	F	1762	              Mycobacteriaceae
+ 55.84	2361413	2074448	G	1763	                Mycobacterium
+  6.64	280596	161419	G1	77643	                  Mycobacterium tuberculosis complex
+  2.50	105696	74351	S	1773	                    Mycobacterium tuberculosis
+  0.16	6824	6824	S1	747369	                      Mycobacterium tuberculosis R1207
+  0.03	1383	827	S1	83332	                      Mycobacterium tuberculosis H37Rv
+  0.01	266	266	S2	757419	                        Mycobacterium tuberculosis H37RvCO
+  

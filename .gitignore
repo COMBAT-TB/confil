@@ -110,3 +110,5 @@ venv.bak/
 data/
 text.txt
 .envrc
+tool_test_output.html
+tool_test_output.json

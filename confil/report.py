@@ -5,7 +5,7 @@ import click
 
 def parse_report(report_file, cutoff):
     file_name = os.path.splitext(os.path.basename(report_file))[0]
-    hits = []
+    hit = None
     if os.stat(report_file).st_size > 0 and report_file.endswith(".report"):
         click.secho("Processing {} with cutoff of {}...\n".format(
             report_file, cutoff), fg='green')
@@ -25,14 +25,14 @@ def parse_report(report_file, cutoff):
                     # Indented scientific name (Mycobacterium\n)
                     name = str(line[5]).strip()
                     if percentage < cutoff and 'Mycobacterium' in name:
-                        click.secho('{}%: {} is contaminated!\n'.format(
+                        click.secho('\n{}%: {} is contaminated!\n'.format(
                             percentage, file_name), fg='red')
                         raise SystemExit('{}%: {} is contaminated!\n'.format(
                             percentage, file_name))
                     if percentage >= cutoff and 'Mycobacterium' in name:
-                        click.secho('{}%: {} is not contaminated!\n{}\n'.format(
-                            percentage, file_name, line), fg='green')
-                        hits.append(line)
+                        click.secho('\n{}%: {} is not contaminated!\n'.format(
+                            percentage, file_name), fg='green')
+                        hit = line
                         break
-    click.secho('Hits: {}'.format(hits), fg='green')
-    return hits
+    click.secho('Hit: {}'.format(hit), fg='green')
+    return hit
