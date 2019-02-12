@@ -12,8 +12,8 @@ TEST_REPORT = os.path.join(TEST_DATA_DIR, "test_file.report")
 
 @pytest.mark.parametrize("test_input, expected", [
     (type(parse_report(TEST_REPORT, 50)), list),
-    (len(parse_report(TEST_REPORT, 50)), 1),
-    ((parse_report(TEST_REPORT, 50))[0][0], '55.84')
+    (parse_report(TEST_REPORT, 50)[5], 'Mycobacterium'),
+    (parse_report(TEST_REPORT, 50)[0], '55.84')
 ])
 def test_parse_report(test_input, expected):
     assert test_input == expected
