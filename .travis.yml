@@ -1,0 +1,18 @@
+os:
+  - linux
+dist: trusty
+sudo: required
+
+language: python
+cache:
+  directories:
+    - $HOME/.cache/pip
+python:
+  - "2.7"
+
+install:
+  - pip install -r requirements.txt
+  - python setup.py install
+
+script:
+  - pytest -v test/
