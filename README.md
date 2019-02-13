@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/COMBAT-TB/confil.svg?branch=master)](https://travis-ci.org/COMBAT-TB/confil)
 
-:no_entry_sign: :construction: _for in-house use_
+:no*entry_sign: :construction: \_for in-house use*
 
 Contamination Filter
 
@@ -17,4 +17,5 @@ $ source envname/bin/activate
 $ pip install -r requirements.txt
 $ python setup.py install
 $ confil --help
+$ confil --threads 1 --paired --cutoff 80 fastq_1.fastq fastq_2.fastq
 ```

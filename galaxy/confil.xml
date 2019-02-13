@@ -3,24 +3,53 @@
         <requirement type="package" version="7.0">click</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
-        confil --threads $threads --paired --cutoff $cutoff "$input1" "$input2"
-    ]]></command>
+        confil --threads $threads
+        #set $input_type = $input_type_conditional.input_type
+        #if $input_type == "paired_collection"
+        --paired 
+        #end if
+        --cutoff $cutoff 
+        #if $input_type == "single"
+        "${input_type_conditional.single_input}"
+        #elif $input_type == "paired_collection"
+        "${input_type_conditional.collection_input.forward}" "${input_type_conditional.collection_input.reverse}"
+        #end if
+    ]]>
+    </command>
     <inputs>
-        <param type="data" name="input1" format="fastq" />
-        <param type="data" name="input2" format="fastq" />
-        <param name="cutoff" type="integer" label="Cutoff percentage" 
-               value="50" min="50" max="99" />
-        <param name="threads" type="integer" label="Number of threads" 
-               value="1" min="1" max="4" />
+        <conditional name="input_type_conditional">
+            <param name="input_type" type="select" label="Select Input Type">
+                <option value="single" selected="true">Single Dataset</option>
+                <option value="paired_collection">Paired Collection</option>
+            </param>
+            <when value="single">
+                <param name="single_input" type="data" format="fq,fastq,fastq.gz,fastqsanger" label="Select FASTQ Dataset" help="Specify dataset with single reads" />
+            </when>
+            <when value="paired_collection">
+                <param name="collection_input" format="fq,fastq,fastq.gz,fastqsanger" type="data_collection" collection_type="paired" label="Select Dataset Pair" help="Specify paired dataset collection containing paired reads" />
+            </when>
+        </conditional>
+        <param name="cutoff" type="integer" label="Cutoff percentage" value="50" min="50" max="99" />
+        <param name="threads" type="integer" label="Number of threads" value="1" min="1" max="4" />
     </inputs>
     <outputs>
-        <data name="output1" format="tabular" from_work_dir="seq.report" />
+        <data name="output" format="tabular" label="${tool.name} report" />
     </outputs>
     <tests>
         <test>
-            <param name="input1" value="seq_1.fastq"/>
-            <param name="input2" value="seq_2.fastq"/>
-            <output name="output1" file="seq.report"/>
+            <param name="single_input" value="seq_1.fastq" />
+            <param name="input_type" value="single" />
+            <output name="output" ftype="tabular" file="seq.tab" />
+        </test>
+        <test>
+            <param name="collection_input">
+                <collection type="paired">
+                    <element name="forward" value="seq_1.fastq" />
+                    <element name="reverse" value="seq_2.fastq" />
+                </collection>
+            </param>
+            <param name="input_type" value="paired_collection" />
+            <output name="output" ftype='tabular' file="seq.tab" />
         </test>
     </tests>
     <help><![CDATA[
@@ -34,7 +63,7 @@ Options:
   --paired           The filenames provided have paired-end reads
   --help             Show this message and exit.
 
-    ]]></help>
+    ]]>    </help>
     <citations>
         <citation type="bibtex">
 @misc{githubconfil,

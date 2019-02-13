@@ -5,7 +5,7 @@ import pytest
 from confil.report import parse_report
 from test_runner import TEST_DATA_DIR
 
-TEST_REPORT = os.path.join(TEST_DATA_DIR, "test_file.report")
+TEST_REPORT = os.path.join(TEST_DATA_DIR, "test_file.tab")
 
 # test using a cutoff of 50%
 

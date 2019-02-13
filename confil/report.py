@@ -6,7 +6,7 @@ import click
 def parse_report(report_file, cutoff):
     file_name = os.path.splitext(os.path.basename(report_file))[0]
     hit = None
-    if os.stat(report_file).st_size > 0 and report_file.endswith(".report"):
+    if os.stat(report_file).st_size > 0 and report_file.endswith(".tab"):
         click.secho("Processing {} with cutoff of {}...\n".format(
             report_file, cutoff), fg='green')
         with open(report_file, 'r') as report:

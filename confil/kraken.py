@@ -1,5 +1,6 @@
 import distutils.spawn
 import os
+import re
 from shlex import split
 from subprocess import PIPE, Popen
 
@@ -23,8 +24,10 @@ def run_kraken(db, threads, cutoff, paired, seqfiles):
     # Using the sample name to track report
     seq_name = [os.path.splitext(os.path.basename(seq))[0]
                 for seq in seqfiles][0]
+    # remove _ and numbers
+    seq_name = re.sub('_[0-9]+$', '', seq_name)
     # building cmd
-    cmd = "kraken2 --threads {threads} --db {db} --output {seq_name}.out --report {seq_name}.report ".format(
+    cmd = "kraken2 --threads {threads} --db {db} --output {seq_name}.out --report {seq_name}.tab ".format(
         threads=threads, db=db, seq_name=seq_name)
     if paired:
         cmd += "--paired --classified-out {}_cseqs#.fq ".format(seq_name)
@@ -34,7 +37,7 @@ def run_kraken(db, threads, cutoff, paired, seqfiles):
 
     # TODO: remove
     test_file = "https://raw.githubusercontent.com/COMBAT-TB/confil/master/test/test_data/test_file.report"
-    out_file = os.path.join(OUT_DIR, "{}.report".format(seq_name))
+    out_file = os.path.join(OUT_DIR, "{}.tab".format(seq_name))
     mock_cmd = 'wget {} -O {}'.format(test_file, out_file)
     cmd = mock_cmd
     click.secho("Executing mock_cmd: \n{}\n".format(split(cmd)), fg='red')
@@ -51,6 +54,6 @@ def run_kraken(db, threads, cutoff, paired, seqfiles):
         error = p.stderr.readline()
         raise OSError("Kraken2 launch error:\n{}\n".format(error))
     # parse kraken report
-    report_file = os.path.join(OUT_DIR, "{}.report".format(seq_name))
+    report_file = os.path.join(OUT_DIR, "{}.tab".format(seq_name))
     parse_report(report_file=report_file, cutoff=cutoff)
     return returncode
