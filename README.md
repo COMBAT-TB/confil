@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/COMBAT-TB/confil.svg?branch=master)](https://travis-ci.org/COMBAT-TB/confil)
 
-:no*entry_sign: :construction: \_for in-house use*
+:no_entry_sign: :construction: \_for in-house use\*
 
 Contamination Filter
 
