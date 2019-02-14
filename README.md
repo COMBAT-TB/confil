@@ -2,9 +2,13 @@
 
 [![Build Status](https://travis-ci.org/COMBAT-TB/confil.svg?branch=master)](https://travis-ci.org/COMBAT-TB/confil)
 
-:no_entry_sign: :construction: **for in-house use**
+:no_entry_sign: :construction: **For in-house use**
 
-Contamination Filter
+`confil` parses a [kraken2](https://ccb.jhu.edu/software/kraken2/) report and determines contamination based on a specified cutoff.
+
+## Requirements
+
+- kraken2
 
 ## Up and running
 
