@@ -3,16 +3,29 @@
         <requirement type="package" version="7.0">click</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
-        confil --threads $threads
         #set $input_type = $input_type_conditional.input_type
-        #if $input_type == "paired_collection"
-        --paired 
-        #end if
-        --cutoff $cutoff 
+        #import re
+
+        ####### Single Input
         #if $input_type == "single"
-        "${input_type_conditional.single_input}"
+        ln -s "${input_type_conditional.single_input}" $input_type_conditional.single_input.element_identifier &&
+        #set report_name = os.path.splitext(os.path.basename($input_type_conditional.single_input.element_identifier))[0]
+        #set report_name = re.sub('_[0-9]+$', '', str(report_name)) + '.tab'
+
+        confil --threads $threads --cutoff $cutoff 
+        $input_type_conditional.single_input.element_identifier
+        && mv $report_name '$output'
+
+        ####### Paired Collection
         #elif $input_type == "paired_collection"
-        "${input_type_conditional.collection_input.forward}" "${input_type_conditional.collection_input.reverse}"
+        ln -s "${input_type_conditional.collection_input.forward}" $input_type_conditional.collection_input.forward.element_identifier &&
+        ln -s "${input_type_conditional.collection_input.reverse}" $input_type_conditional.collection_input.reverse.element_identifier &&
+        #set report_name = os.path.splitext(os.path.basename($input_type_conditional.collection_input.forward.element_identifier))[0]
+        #set report_name = re.sub('_[0-9]+$', '', str(report_name)) + '.tab'
+
+        confil --threads $threads --cutoff $cutoff --paired 
+        $input_type_conditional.collection_input.forward.element_identifier $input_type_conditional.collection_input.reverse.element_identifier
+        && mv $report_name '$output'
         #end if
     ]]>
     </command>

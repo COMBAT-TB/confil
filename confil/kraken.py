@@ -36,7 +36,7 @@ def run_kraken(db, threads, cutoff, paired, seqfiles):
         split(cmd)), fg='bright_yellow')
 
     # TODO: remove
-    test_file = "https://raw.githubusercontent.com/COMBAT-TB/confil/master/test/test_data/test_file.report"
+    test_file = "https://raw.githubusercontent.com/COMBAT-TB/confil/master/test/test_data/test_file.tab"
     out_file = os.path.join(OUT_DIR, "{}.tab".format(seq_name))
     mock_cmd = 'wget {} -O {}'.format(test_file, out_file)
     cmd = mock_cmd
