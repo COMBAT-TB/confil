@@ -1,6 +1,7 @@
 # confil
 
 [![Build Status](https://travis-ci.org/COMBAT-TB/confil.svg?branch=master)](https://travis-ci.org/COMBAT-TB/confil)
+[![Anaconda-Server Badge](https://anaconda.org/thoba/confil/badges/version.svg)](https://anaconda.org/thoba/confil)
 
 :no_entry_sign: :construction: **For in-house use**
 
