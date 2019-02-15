@@ -1,0 +1,32 @@
+package:
+  name: confil
+  version: {{ environ['VERSION'] }}
+
+source:
+  fn: confil-0.0.1.tar.gz
+  url: https://github.com/COMBAT-TB/confil/archive/0.0.1.tar.gz
+
+build:
+  script_env:
+    - VERSION
+    - CONDA_BLD_PATH
+  number: 0
+
+requirements:
+  build:
+    - python
+    - click
+  run:
+    - python
+    - click
+test:
+  imports:
+    - confil
+  commands:
+    - tbvcfreport generate --help 2>&1 |grep VCF_DIR >/dev/null
+
+about:
+  home: https://github.com/COMBAT-TB/confil
+  license_file: LICENSE
+  summary: "confil parses a kraken2 report and determines contamination based on a specified cutoff."
+  dev_url: https://github.com/COMBAT-TB/confil
