@@ -19,12 +19,7 @@ requirements:
   run:
     - python
     - click
-test:
-  imports:
-    - confil
-  commands:
-    - tbvcfreport generate --help 2>&1 |grep VCF_DIR >/dev/null
-
+    
 about:
   home: https://github.com/COMBAT-TB/confil
   license_file: LICENSE
