@@ -1,4 +1,4 @@
-<tool id="confil" name="Contamination Filter (confil)" version="0.1.0">
+<tool id="confil" name="Contamination Filter (confil)" version="0.1.2">
     <requirements>
         <requirement type="package" version="7.0">click</requirement>
     </requirements>
@@ -12,9 +12,10 @@
         #set report_name = os.path.splitext(os.path.basename($input_type_conditional.single_input.element_identifier))[0]
         #set report_name = re.sub('_[0-9]+$', '', str(report_name)) + '.tab'
 
-        python $__tool_directory__/confil/confil.py --threads $threads --cutoff $cutoff 
+        confil --threads $threads --cutoff $cutoff 
         $input_type_conditional.single_input.element_identifier
-        && mv $report_name '$output'
+        && mv $report_name '$output_report'
+        && ln -sf "${input_type_conditional.single_input}" '$output_file1'
 
         ####### Paired Collection
         #elif $input_type == "paired_collection"
@@ -23,9 +24,11 @@
         #set report_name = os.path.splitext(os.path.basename($input_type_conditional.collection_input.forward.element_identifier))[0]
         #set report_name = re.sub('_[0-9]+$', '', str(report_name)) + '.tab'
 
-        python $__tool_directory__/confil/confil.py --threads $threads --cutoff $cutoff --paired 
+        confil --threads $threads --cutoff $cutoff --paired 
         $input_type_conditional.collection_input.forward.element_identifier $input_type_conditional.collection_input.reverse.element_identifier
-        && mv $report_name '$output'
+        && mv $report_name '$output_report'
+        && ln -sf "${input_type_conditional.collection_input.forward}" '$output_file1'
+        && ln -sf "${input_type_conditional.collection_input.reverse}" '$output_file2'
         #end if
     ]]>
     </command>
@@ -46,13 +49,19 @@
         <param name="threads" type="integer" label="Number of threads" value="1" min="1" max="4" />
     </inputs>
     <outputs>
-        <data name="output" format="tabular" label="${tool.name} report" />
+        <data name="output_report" format="tabular" label="${tool.name} report" />
+        <data name="output_file1" format="fastq" label="${tool.name} report">
+        </data>
+        <data name="output_file2" format="fastq" label="${tool.name} report">
+            <filter>input_type_conditional['input_type'] == "paired_collection"</filter>
+        </data>
     </outputs>
     <tests>
         <test>
             <param name="single_input" value="seq_1.fastq" />
             <param name="input_type" value="single" />
-            <output name="output" ftype="tabular" file="seq.tab" />
+            <output name="output_report" ftype="tabular" file="seq.tab" />
+            <output name="output_file1" ftype="fastq" file="seq_1.fastq" />
         </test>
         <test>
             <param name="collection_input">
@@ -62,20 +71,13 @@
                 </collection>
             </param>
             <param name="input_type" value="paired_collection" />
-            <output name="output" ftype='tabular' file="seq.tab" />
+            <output name="output_report" ftype='tabular' file="seq.tab" />
+            <output name="output_file1" ftype='fastq' file="seq_1.fastq" />
+            <output name="output_file2" ftype='fastq' file="seq_2.fastq" />
         </test>
     </tests>
     <help><![CDATA[
-        Usage: confil [OPTIONS] SEQFILES...
-
-Options:
-  --db PATH          Name for Kraken 2 DB  [default:
-                     /tools/databases/kraken2/04092018/standard/; required]
-  --threads INTEGER  Number of threads  [default: 1]
-  --cutoff INTEGER   Percentage of fragments covered  [default: 90]
-  --paired           The filenames provided have paired-end reads
-  --help             Show this message and exit.
-
+        confil parses a kraken2 report and determines contamination based on a specified cutoff.
     ]]>    </help>
     <citations>
         <citation type="bibtex">
