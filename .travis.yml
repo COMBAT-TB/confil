@@ -23,6 +23,7 @@ before_install:
   - conda config --add channels bioconda
   - conda config --add channels https://conda.anaconda.org/thoba
   - conda info -a
+  - conda install kraken2
 install:
   - conda install pip conda-build anaconda-client
   - pip install -r requirements.txt
