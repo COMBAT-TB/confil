@@ -15,7 +15,7 @@
         confil --threads $threads --cutoff $cutoff 
         $input_type_conditional.single_input.element_identifier
         && mv $report_name '$output_report'
-        && ln -sf "${input_type_conditional.single_input}" '$output_file1'
+        && ln -sf "${input_type_conditional.single_input}" '$single_output_file'
 
         ####### Paired Collection
         #elif $input_type == "paired_collection"
@@ -27,8 +27,8 @@
         confil --threads $threads --cutoff $cutoff --paired 
         $input_type_conditional.collection_input.forward.element_identifier $input_type_conditional.collection_input.reverse.element_identifier
         && mv $report_name '$output_report'
-        && ln -sf "${input_type_conditional.collection_input.forward}" '$output_file1'
-        && ln -sf "${input_type_conditional.collection_input.reverse}" '$output_file2'
+        && ln -sf "${input_type_conditional.collection_input.forward}" '$list_output.forward'
+        && ln -sf "${input_type_conditional.collection_input.reverse}" '$list_output.reverse'
         #end if
     ]]>
     </command>
@@ -49,19 +49,22 @@
         <param name="threads" type="integer" label="Number of threads" value="1" min="1" max="4" />
     </inputs>
     <outputs>
-        <data name="output_report" format="tabular" label="${tool.name} report" />
-        <data name="output_file1" format="fastq" label="${tool.name} report">
+        <data name="output_report" format="tabular" label="Kraken2 report" />
+        <data name="single_output_file" format="fastq" label="${tool.name} single output">
+            <filter>input_type_conditional['input_type'] == "single"</filter>
         </data>
-        <data name="output_file2" format="fastq" label="${tool.name} report">
+        <collection name="list_output" type="paired" label="${tool.name} paired output" structured_like="collection_input" inherit_format="true">
             <filter>input_type_conditional['input_type'] == "paired_collection"</filter>
-        </data>
+            <data name="forward" format="fastq" />
+            <data name="reverse" format="fastq" />
+        </collection>
     </outputs>
     <tests>
         <test>
             <param name="single_input" value="seq_1.fastq" />
             <param name="input_type" value="single" />
             <output name="output_report" ftype="tabular" file="seq.tab" />
-            <output name="output_file1" ftype="fastq" file="seq_1.fastq" />
+            <output name="single_output_file" ftype="fastq" file="seq_1.fastq" />
         </test>
         <test>
             <param name="collection_input">
@@ -72,8 +75,12 @@
             </param>
             <param name="input_type" value="paired_collection" />
             <output name="output_report" ftype='tabular' file="seq.tab" />
-            <output name="output_file1" ftype='fastq' file="seq_1.fastq" />
-            <output name="output_file2" ftype='fastq' file="seq_2.fastq" />
+            <output_collection name="list_output" type="paired">
+                <element name="forward">
+                </element>
+                <element name="reverse">
+                </element>
+            </output_collection>
         </test>
     </tests>
     <help><![CDATA[
