@@ -13,7 +13,7 @@
         #set report_name = os.path.splitext(os.path.basename($input_type_conditional.single_input.element_identifier))[0]
         #set report_name = re.sub('_[0-9]+$', '', str(report_name)) + '.tab'
 
-        python $__tool_directory__/confil/confil.py --threads $threads --cutoff $cutoff 
+        confil --threads $threads --cutoff $cutoff 
         $input_type_conditional.single_input.element_identifier
         && mv $report_name '$output_report'
         && ln -sf "${input_type_conditional.single_input}" '$single_output_file'
@@ -25,7 +25,7 @@
         #set report_name = os.path.splitext(os.path.basename($input_type_conditional.collection_input.forward.element_identifier))[0]
         #set report_name = re.sub('_[0-9]+$', '', str(report_name)) + '.tab'
 
-        python $__tool_directory__/confil/confil.py --threads $threads --cutoff $cutoff --paired 
+        confil --threads $threads --cutoff $cutoff --paired 
         $input_type_conditional.collection_input.forward.element_identifier $input_type_conditional.collection_input.reverse.element_identifier
         && mv $report_name '$output_report'
         && ln -sf "${input_type_conditional.collection_input.forward}" '$list_output.forward'
