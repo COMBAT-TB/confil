@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='confil',
-    version='0.1.2',
+    version='0.1.3',
     url='https://github.com/COMBAT-TB/confil',
     description='Contamination filter',
     long_description=long_description,

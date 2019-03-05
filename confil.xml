@@ -1,4 +1,4 @@
-<tool id="confil" name="Contamination Filter (confil)" version="0.1.2">
+<tool id="confil" name="Contamination Filter (confil)" version="0.1.3">
     <requirements>
         <requirement type="package" version="7.0">click</requirement>
         <requirement type="package" version="2.0.7_beta">kraken2</requirement>
