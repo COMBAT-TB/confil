@@ -19,14 +19,6 @@ def db_path():
         return OUT_DIR
 
 
-def kraken_installed():
-    # check if `kraken2` is in path
-    installed = distutils.spawn.find_executable("kraken2")
-    if not installed:
-        raise OSError("kraken2 is not installed.")
-    return installed
-
-
 def run_kraken(db, threads, cutoff, paired, seqfiles):
     # Using the sample name to track report
     seq_name = [os.path.splitext(os.path.basename(seq))[0]
@@ -43,11 +35,11 @@ def run_kraken(db, threads, cutoff, paired, seqfiles):
         split(cmd)), fg='bright_yellow')
 
     # TODO: remove
-    test_file = "https://raw.githubusercontent.com/COMBAT-TB/confil/master/test/test_data/test_file.tab"
-    out_file = os.path.join(OUT_DIR, "{}.tab".format(seq_name))
-    mock_cmd = 'wget {} -O {}'.format(test_file, out_file)
-    cmd = mock_cmd
-    click.secho("Executing mock_cmd: \n{}\n".format(split(cmd)), fg='red')
+    # test_file = "https://raw.githubusercontent.com/COMBAT-TB/confil/master/test/test_data/test_file.tab"
+    # out_file = os.path.join(OUT_DIR, "{}.tab".format(seq_name))
+    # mock_cmd = 'wget {} -O {}'.format(test_file, out_file)
+    # cmd = mock_cmd
+    # click.secho("Executing mock_cmd: \n{}\n".format(split(cmd)), fg='red')
 
     p = Popen(split(cmd), stdout=PIPE, stderr=PIPE, close_fds=True)
     while True:
@@ -99,6 +91,14 @@ def parse_report(report_file, cutoff):
                         break
     click.secho('Hit: {}'.format(hit), fg='green')
     return hit
+
+
+def kraken_installed():
+    # check if `kraken2` is in path
+    installed = distutils.spawn.find_executable("kraken2")
+    if not installed:
+        raise OSError("kraken2 is not installed.")
+    return installed
 
 
 @click.command()
