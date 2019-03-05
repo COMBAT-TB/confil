@@ -2,6 +2,7 @@
     <requirements>
         <requirement type="package" version="7.0">click</requirement>
         <requirement type="package" version="2.0.7_beta">kraken2</requirement>
+        <requirement type="package" version="dev20190305">confil</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
         #set $input_type = $input_type_conditional.input_type
