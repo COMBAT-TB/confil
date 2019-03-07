@@ -1,16 +1,17 @@
+{% set version = "0.1.3" %}
+{% set sha256 = "8ae72d4c136edff4e755462f6c57c903edb8479ea68d6f0ccdb38f6c56e42d04" %}
+
 package:
   name: confil
-  version: {{ environ['VERSION'] }}
+  version: {{ version }}
 
 source:
-  fn: confil-0.1.3.tar.gz
-  url: https://github.com/COMBAT-TB/confil/archive/0.1.3.tar.gz
+  url: https://github.com/COMBAT-TB/confil/archive/{{ version }}.tar.gz
+  sha256: {{ sha256 }}
 
 build:
-  script_env:
-    - VERSION
-    - CONDA_BLD_PATH
-  number: 0
+  script: "{{ PYTHON }} -m pip install . --no-deps -vv"
+  number: 1
 
 requirements:
   build:
@@ -19,7 +20,14 @@ requirements:
   run:
     - python
     - click
-    
+    - kraken2
+
+test:
+  commands:
+    - confil |& grep confil
+  imports:
+    - confil
+
 about:
   home: https://github.com/COMBAT-TB/confil
   license_file: LICENSE
