@@ -8,7 +8,6 @@ OS=$TRAVIS_OS_NAME-64
 conda config --set anaconda_upload no
 DEV='dev'
 DATE=`date +%Y%m%d`
-export VERSION=$DEV$DATE
 export CONDA_BLD_PATH=$HOME/miniconda/conda-bld
 conda build .
 anaconda -t $CONDA_UPLOAD_TOKEN upload -u $USER $CONDA_BLD_PATH/$OS/$PKG_NAME-*.tar.bz2 --force
