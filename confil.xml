@@ -1,21 +1,24 @@
-<tool id="confil" name="Contamination Filter (confil)" version="@VERSION@+galaxy0">
+<tool id="confil" name="Contamination Filter (confil)" version="@VERSION@+galaxy1">
     <macros>
-	<token name="@VERSION@">0.1.3</token>
+        <token name="@VERSION@">0.1.3</token>
     </macros>
     <requirements>
         <requirement type="package" version="@VERSION@">confil</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
+        ln -s \$(which kraken2) \$(pwd)/kraken2 && 
+        PATH=\$(pwd):\$PATH && export PATH &&
+
         #set $input_type = $input_type_conditional.input_type
         #import re
-
+        
         ####### Single Input
         #if $input_type == "single"
         ln -s "${input_type_conditional.single_input}" $input_type_conditional.single_input.element_identifier &&
         #set report_name = os.path.splitext(os.path.basename($input_type_conditional.single_input.element_identifier))[0]
         #set report_name = re.sub('_[0-9]+$', '', str(report_name)) + '.tab'
 
-        confil --threads $threads --cutoff $cutoff 
+        confil --threads \${GALAXY_SLOTS:-1} --cutoff $cutoff 
         $input_type_conditional.single_input.element_identifier
         && mv $report_name '$output_report'
         && ln -sf "${input_type_conditional.single_input}" '$single_output_file'
@@ -27,7 +30,7 @@
         #set report_name = os.path.splitext(os.path.basename($input_type_conditional.collection_input.forward.element_identifier))[0]
         #set report_name = re.sub('_[0-9]+$', '', str(report_name)) + '.tab'
 
-        confil --threads $threads --cutoff $cutoff --paired 
+        confil --threads \${GALAXY_SLOTS:-1} --cutoff $cutoff --paired 
         $input_type_conditional.collection_input.forward.element_identifier $input_type_conditional.collection_input.reverse.element_identifier
         && mv $report_name '$output_report'
         && ln -sf "${input_type_conditional.collection_input.forward}" '$list_output.forward'
@@ -48,8 +51,7 @@
                 <param name="collection_input" format="fq,fastq,fastq.gz,fastqsanger" type="data_collection" collection_type="paired" label="Select Dataset Pair" help="Specify paired dataset collection containing paired reads" />
             </when>
         </conditional>
-        <param name="cutoff" type="integer" label="Cutoff percentage" value="50" min="50" max="99" />
-        <param name="threads" type="integer" label="Number of threads" value="1" min="1" max="4" />
+        <param name="cutoff" type="integer" label="Cutoff percentage" value="90" min="50" max="99" />
     </inputs>
     <outputs>
         <data name="output_report" format="tabular" label="Kraken2 report" />
