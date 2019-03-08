@@ -1,5 +1,5 @@
 {% set version = "0.1.4" %}
-{% set sha256 = "9700ab2384d1d05e4579e8b72734adf99dda073fd0fe4e39690792d7f8a464ff" %}
+{% set sha256 = "1ebbb14e64e057d6b58f4942a7b1dbf9e53f4ab741709b0ecfcb8d358fb8848e" %}
 
 package:
   name: confil
