@@ -1,14 +1,12 @@
-<tool id="confil" name="Contamination Filter (confil)" version="@VERSION@+galaxy1">
+<tool id="confil" name="Contamination Filter (confil)" version="@VERSION@+galaxy0">
     <macros>
-        <token name="@VERSION@">0.1.3</token>
+        <token name="@VERSION@">0.1.4</token>
     </macros>
     <requirements>
         <requirement type="package" version="@VERSION@">confil</requirement>
+        <requirement type="package" version="7.0">click</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
-        ln -s \$(which kraken2) \$(pwd)/kraken2 && 
-        PATH=\$(pwd):\$PATH && export PATH &&
-
         #set $input_type = $input_type_conditional.input_type
         #import re
         
@@ -54,11 +52,11 @@
         <param name="cutoff" type="integer" label="Cutoff percentage" value="90" min="50" max="99" />
     </inputs>
     <outputs>
-        <data name="output_report" format="tabular" label="Kraken2 report" />
-        <data name="single_output_file" format="fastq" label="${tool.name} single output">
+        <data name="output_report" format="tabular" label="${tool.name} on ${on_string} kraken2 report" />
+        <data name="single_output_file" format="fastq" label="${tool.name} on ${on_string} single output">
             <filter>input_type_conditional['input_type'] == "single"</filter>
         </data>
-        <collection name="list_output" type="paired" label="${tool.name} paired output" structured_like="collection_input" inherit_format="true">
+        <collection name="list_output" type="paired" label="${tool.name} on ${on_string} paired output" structured_like="collection_input" inherit_format="true">
             <filter>input_type_conditional['input_type'] == "paired_collection"</filter>
             <data name="forward" format="fastq" />
             <data name="reverse" format="fastq" />
