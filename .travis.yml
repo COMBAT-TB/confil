@@ -1,13 +1,16 @@
 os:
   - linux
-dist: trusty
+dist: xenial
 sudo: required
 language: python
 cache:
   directories:
     - "$HOME/.cache/pip"
 python:
-  - "2.7"
+  - "3.5"
+  - "3.6"
+  - "3.7"
+
 before_install:
   - sudo apt-get update
   - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh
