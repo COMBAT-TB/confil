@@ -20,9 +20,9 @@
           $input_type_conditional.single_input.element_identifier ;
         then 
           ln -sf "${input_type_conditional.single_input}" '$single_output_file' ;
-	    else
-	      touch '$single_output_file' ;
-	    fi
+	      else
+	        touch '$single_output_file' ;
+	      fi
         && mv $report_name '$output_report'
 
         ####### Paired Collection
@@ -34,12 +34,12 @@
 
         if confil --threads \${GALAXY_SLOTS:-1} --cutoff $cutoff --paired 
             $input_type_conditional.collection_input.forward.element_identifier $input_type_conditional.collection_input.reverse.element_identifier ;
-	    then 
+	      then 
             ln -sf "${input_type_conditional.collection_input.forward}" '$list_output.forward'
             && ln -sf "${input_type_conditional.collection_input.reverse}" '$list_output.reverse' ;
-	    else
+	      else
 	        touch '$list_output.forward' && touch '$list_output.reverse' ;
-	    fi
+	      fi
         && mv $report_name '$output_report'
         #end if
     ]]>
