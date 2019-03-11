@@ -23,7 +23,6 @@
 	    else
 	      touch '$single_output_file' ;
 	    fi
-        && mv $report_name '$output_report'
 
         ####### Paired Collection
         #elif $input_type == "paired_collection"
@@ -40,8 +39,9 @@
 	    else
 	        touch '$list_output.forward' && touch '$list_output.reverse' ;
 	    fi
-        && mv $report_name '$output_report'
         #end if
+        && mv $report_name '$output_report'
+
     ]]>
     </command>
     <inputs>
