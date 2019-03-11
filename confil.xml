@@ -16,10 +16,14 @@
         #set report_name = os.path.splitext(os.path.basename($input_type_conditional.single_input.element_identifier))[0]
         #set report_name = re.sub('_[0-9]+$', '', str(report_name)) + '.tab'
 
-        confil --threads \${GALAXY_SLOTS:-1} --cutoff $cutoff 
-        $input_type_conditional.single_input.element_identifier
+        if confil --threads \${GALAXY_SLOTS:-1} --cutoff $cutoff 
+          $input_type_conditional.single_input.element_identifier ;
+        then 
+          ln -sf "${input_type_conditional.single_input}" '$single_output_file' ;
+	    else
+	      touch '$single_output_file' ;
+	    fi
         && mv $report_name '$output_report'
-        && ln -sf "${input_type_conditional.single_input}" '$single_output_file'
 
         ####### Paired Collection
         #elif $input_type == "paired_collection"
@@ -28,11 +32,15 @@
         #set report_name = os.path.splitext(os.path.basename($input_type_conditional.collection_input.forward.element_identifier))[0]
         #set report_name = re.sub('_[0-9]+$', '', str(report_name)) + '.tab'
 
-        confil --threads \${GALAXY_SLOTS:-1} --cutoff $cutoff --paired 
-        $input_type_conditional.collection_input.forward.element_identifier $input_type_conditional.collection_input.reverse.element_identifier
+        if confil --threads \${GALAXY_SLOTS:-1} --cutoff $cutoff --paired 
+            $input_type_conditional.collection_input.forward.element_identifier $input_type_conditional.collection_input.reverse.element_identifier ;
+	    then 
+            ln -sf "${input_type_conditional.collection_input.forward}" '$list_output.forward'
+            && ln -sf "${input_type_conditional.collection_input.reverse}" '$list_output.reverse' ;
+	    else
+	        touch '$list_output.forward' && touch '$list_output.reverse' ;
+	    fi
         && mv $report_name '$output_report'
-        && ln -sf "${input_type_conditional.collection_input.forward}" '$list_output.forward'
-        && ln -sf "${input_type_conditional.collection_input.reverse}" '$list_output.reverse'
         #end if
     ]]>
     </command>
