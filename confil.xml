@@ -1,4 +1,4 @@
-<tool id="confil" name="Contamination Filter (confil)" version="@VERSION@+galaxy4">
+<tool id="confil" name="Contamination Filter (confil)" version="@VERSION@+galaxy0">
     <macros>
         <token name="@VERSION@">0.1.4</token>
     </macros>
@@ -20,9 +20,11 @@
           $input_type_conditional.single_input.element_identifier ;
         then 
           ln -sf "${input_type_conditional.single_input}" '$single_output_file' ;
-	else
-	  touch '$single_output_file' ;
-	fi
+	      else
+	        touch '$single_output_file' ;
+	      fi
+        && mv $report_name '$output_report'
+
         ####### Paired Collection
         #elif $input_type == "paired_collection"
         ln -s "${input_type_conditional.collection_input.forward}" $input_type_conditional.collection_input.forward.element_identifier &&
@@ -31,15 +33,15 @@
         #set report_name = re.sub('_[0-9]+$', '', str(report_name)) + '.tab'
 
         if confil --threads \${GALAXY_SLOTS:-1} --cutoff $cutoff --paired 
-        $input_type_conditional.collection_input.forward.element_identifier $input_type_conditional.collection_input.reverse.element_identifier ;
-	then 
-          ln -sf "${input_type_conditional.collection_input.forward}" '$list_output.forward'
-          && ln -sf "${input_type_conditional.collection_input.reverse}" '$list_output.reverse' ;
-	else
-	  touch '$list_output.forward' && touch '$list_output.reverse' ;
-	fi
-        #end if
+            $input_type_conditional.collection_input.forward.element_identifier $input_type_conditional.collection_input.reverse.element_identifier ;
+	      then 
+            ln -sf "${input_type_conditional.collection_input.forward}" '$list_output.forward'
+            && ln -sf "${input_type_conditional.collection_input.reverse}" '$list_output.reverse' ;
+	      else
+	        touch '$list_output.forward' && touch '$list_output.reverse' ;
+	      fi
         && mv $report_name '$output_report'
+        #end if
     ]]>
     </command>
     <inputs>
