@@ -1,6 +1,6 @@
 <tool id="confil" name="Contamination Filter (confil)" version="@VERSION@+galaxy0">
     <macros>
-        <token name="@VERSION@">0.1.4</token>
+        <token name="@VERSION@">0.1.5</token>
     </macros>
     <requirements>
         <requirement type="package" version="@VERSION@">confil</requirement>

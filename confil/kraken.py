@@ -42,13 +42,10 @@ def run_kraken(db, threads, cutoff, paired, seqfiles):
     # click.secho("Executing mock_cmd: \n{}\n".format(split(cmd)), fg='red')
 
     p = Popen(split(cmd), stdout=PIPE, stderr=PIPE, close_fds=True)
-    while True:
-        output = p.stdout.readline()
-        if output == '' and p.poll() is not None:
-            break
-        if output:
-            click.echo(output)
-    returncode = p.poll()
+    (output, _) = p.communicate()
+    if output:
+        click.echo(output)
+    returncode = p.wait()
     if returncode != 0:
         error = p.stderr.readline()
         raise OSError("Kraken2 launch error:\n{}\n".format(error))
