@@ -1,4 +1,4 @@
-<tool id="confil" name="Contamination Filter (confil)" version="@VERSION@+galaxy0">
+<tool id="confil" name="Contamination Filter (confil)" version="@VERSION@+galaxy1">
     <macros>
         <token name="@VERSION@">0.1.4</token>
     </macros>
@@ -6,7 +6,8 @@
         <requirement type="package" version="@VERSION@">confil</requirement>
         <requirement type="package" version="7.0">click</requirement>
     </requirements>
-    <command detect_errors="exit_code"><![CDATA[
+    <command detect_errors="exit_code">
+        <![CDATA[
         #set $input_type = $input_type_conditional.input_type
         #import re
         
@@ -61,13 +62,13 @@
     </inputs>
     <outputs>
         <data name="output_report" format="tabular" label="${tool.name} on ${on_string} kraken2 report" />
-        <data name="single_output_file" format="fastq" label="${tool.name} on ${on_string} single output">
+        <data name="single_output_file" format_source="single_input" metadata_source="single_input" label="${tool.name} on ${on_string} single output">
             <filter>input_type_conditional['input_type'] == "single"</filter>
         </data>
         <collection name="list_output" type="paired" label="${tool.name} on ${on_string} paired output" structured_like="collection_input" inherit_format="true">
             <filter>input_type_conditional['input_type'] == "paired_collection"</filter>
-            <data name="forward" format="fastq" />
-            <data name="reverse" format="fastq" />
+            <data name="forward" format_source="${collection_input.forward}" metadata_source="${collection_input.forward}" />
+            <data name="reverse" format_source="${collection_input.reverse}" metadata_source="${collection_input.reverse}" />
         </collection>
     </outputs>
     <tests>
@@ -85,18 +86,18 @@
                 </collection>
             </param>
             <param name="input_type" value="paired_collection" />
-            <output name="output_report" ftype='tabular' file="seq.tab" />
+            <output name="output_report" ftype="tabular" file="seq.tab" />
             <output_collection name="list_output" type="paired">
-                <element name="forward" value="seq_1.fastq">
-                </element>
-                <element name="reverse" value="seq_2.fastq">
-                </element>
+                <element name="forward" value="seq_1.fastq"></element>
+                <element name="reverse" value="seq_2.fastq"></element>
             </output_collection>
         </test>
     </tests>
-    <help><![CDATA[
+    <help>
+        <![CDATA[
         confil parses a kraken2 report and determines contamination based on a specified cutoff.
-    ]]>    </help>
+    ]]>
+    </help>
     <citations>
         <citation type="bibtex">
 @misc{githubconfil,
